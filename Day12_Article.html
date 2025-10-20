@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مدونة عبد الرحمن 💻</title>
+
+  <style>
+    body {
+      font-family: "Cairo", sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.5s, color 0.5s;
+    }
+
+    /* 🎨 الألوان العامة */
+    :root {
+      --bg: #f5f7fa;
+      --text: #222;
+      --card-bg: white;
+      --accent: #1a73e8;
+    }
+
+    /* 🌙 وضع ليلي */
+    body.dark {
+      --bg: #121212;
+      --text: #eaeaea;
+      --card-bg: #1e1e1e;
+      --accent: #64b5f6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--accent), #0d47a1);
+      color: white;
+      text-align: center;
+      padding: 30px 0;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 34px;
+    }
+
+    header p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .toggle-mode {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background-color: white;
+      color: #0d47a1;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .toggle-mode:hover {
+      background-color: #e3f2fd;
+      transform: scale(1.05);
+    }
+
+    .articles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 30px 40px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.3s;
+      transform: translateY(20px);
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    /* ✨ تحريك البطاقات */
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 18px;
+      text-align: right;
+    }
+
+    .card-content h3 {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 21px;
+    }
+
+    .card-content p {
+      font-size: 15px;
+      color: var(--text);
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    footer {
+      background-color: #0d47a1;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🧭 رأس الصفحة -->
+  <header>
+    <button class="toggle-mode" onclick="toggleMode()">🌙</button>
+    <h1>مدونة عبد الرحمن الأدربي 💡</h1>
+    <p>مقالات تقنية وتطوير ذاتي بأسلوب بسيط وممتع</p>
+  </header>
+
+  <!-- 📰 المقالات -->
+  <div class="articles" id="articlesContainer"></div>
+
+  <!-- 📄 التذييل -->
+  <footer>
+    © 2025 مدونة عبد الرحمن الأدربي | جميع الحقوق محفوظة
+  </footer>
+
+  <script>
+    // 🧠 قائمة المقالات
+    const articles = [
+      {
+        id: 1,
+        title: "تعلم HTML من الصفر",
+        desc: "ابدأ رحلتك في بناء المواقع بتعلم أساسيات لغة HTML.",
+        content: "HTML هي اللغة الأساسية التي تُستخدم لبناء هيكل صفحات الويب. كل عنصر في الصفحة هو Tag من HTML.",
+        img: "https://picsum.photos/400/200?random=10"
+      },
+      {
+        id: 2,
+        title: "دليل CSS للمبتدئين",
+        desc: "أضف الألوان والجمال إلى صفحاتك باستخدام CSS.",
+        content: "CSS تسمح لك بتخصيص شكل موقعك بالكامل، من الألوان والخطوط إلى التوزيع والمسافات.",
+        img: "https://picsum.photos/400/200?random=11"
+      },
+      {
+        id: 3,
+        title: "مقدمة إلى JavaScript",
+        desc: "أضف التفاعل والحركة إلى موقعك باستخدام JavaScript.",
+        content: "JavaScript تجعل صفحاتك ديناميكية، مثل عرض الرسائل أو التحكم في الأزرار والعناصر.",
+        img: "https://picsum.photos/400/200?random=12"
+      },
+      {
+        id: 4,
+        title: "ما هو الأمن السيبراني؟",
+        desc: "تعرف على أساسيات حماية نفسك وبياناتك على الإنترنت.",
+        content: "الأمن السيبراني مجال واسع لحماية الأنظمة والمواقع من الهجمات الرقمية.",
+        img: "https://picsum.photos/400/200?random=13"
+      }
+    ];
+
+    // 🧩 عرض المقالات
+    function displayArticles() {
+      const container = document.getElementById("articlesContainer");
+      container.innerHTML = "";
+
+      articles.forEach(article => {
+        const card = `
+          <div class="card" onclick="openArticle(${article.id})">
+            <img src="${article.img}" alt="Article Image">
+            <div class="card-content">
+              <h3>${article.title}</h3>
+              <p>${article.desc}</p>
+            </div>
+          </div>`;
+        container.innerHTML += card;
+      });
+    }
+
+    // 🔗 عند الضغط على مقال
+    function openArticle(id) {
+      const selected = articles.find(a => a.id === id);
+      localStorage.setItem("selectedArticle", JSON.stringify(selected));
+      window.location.href = "Day12_Article.html";
+    }
+
+    // 🌙 التبديل بين الوضع الليلي والنهاري
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+      const btn = document.querySelector(".toggle-mode");
+      btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+    }
+
+    window.onload = displayArticles;
+  </script>
+</body>
+</html>
